@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин</title>
+    <style>
+        .product-list, .cart-items {
+            display: flex;
+            flex-direction: column;
+        }
+        .product, .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+        .product img {
+            width: 100px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .product-info {
+            display: flex;
+            align-items: center;
+        }
+        .cart {
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 2px solid #333;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h1>Магазин</h1>
+
+    <!-- Перечень товаров -->
+    <div id="product-list" class="product-list">
+        <div class="product" data-id="1" data-name="Товар 1">
+            <div class="product-info">
+                <img src="https://carwinta.ru/image/cache/catalog/moi/avto/lada/granta-drive-active-100x100.jpg" alt="Товар 1">
+                <span>Товар 1</span>
+            </div>
+            <button class="add-to-cart">Добавить в корзину</button>
+        </div>
+        <div class="product" data-id="2" data-name="Товар 2">
+            <div class="product-info">
+                <img src="https://sun9-4.userapi.com/c9572/u54724737/d_22b20140.jpg?ava=1" alt="Товар 2">
+                <span>Товар 2</span>
+            </div>
+            <button class="add-to-cart">Добавить в корзину</button>
+        </div>
+        <div class="product" data-id="3" data-name="Товар 3">
+            <div class="product-info">
+                <img src="https://avatars.mds.yandex.net/i?id=ffd9db2c8074d24fd313268f93d74942-4871215-images-thumbs&n=13" alt="Товар 3">
+                <span>Товар 3</span>
+            </div>
+            <button class="add-to-cart">Добавить в корзину</button>
+        </div>
+    </div>
+
+    <!-- Корзина -->
+    <div class="cart">
+        <h2>Корзина</h2>
+        <div id="cart-items" class="cart-items"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Добавление товара в корзину
+            $(".add-to-cart").click(function () {
+                let product = $(this).closest(".product");
+                let productId = product.data("id");
+                let productName = product.data("name");
+                let productImage = product.find("img").attr("src");
+
+                // Проверяем, есть ли товар уже в корзине
+                if ($("#cart-item-" + productId).length === 0) {
+                    // Создаем элемент корзины
+                    let cartItem = `
+                        <div class="cart-item" id="cart-item-${productId}">
+                            <div class="product-info">
+                                <img src="${productImage}" alt="${productName}">
+                                <span>${productName}</span>
+                            </div>
+                            <button class="remove-from-cart">Удалить</button>
+                        </div>
+                    `;
+                    $("#cart-items").append(cartItem);
+                } else {
+                    alert("Товар уже добавлен в корзину.");
+                }
+            });
+
+            // Удаление товара из корзины
+            $(document).on("click", ".remove-from-cart", function () {
+                $(this).closest(".cart-item").remove();
+            });
+        });
+    </script>
+
+</body>
+</html>
